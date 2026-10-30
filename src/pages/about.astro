@@ -1,0 +1,141 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site';
+
+const experience = [
+  {
+    role: 'Machine Learning Engineering Consultant (Lead)',
+    org: 'Proppy, Brussels',
+    when: '2024 – 2025',
+    text: 'Built an LLM-based universal property-page scraper covering 2,000 agencies in Dutch, French and English, and scaled the Airflow pipeline from 30 to 2,000 agencies (85,000+ properties).',
+  },
+  {
+    role: 'Senior Data Scientist',
+    org: 'Blinkit, Bengaluru',
+    when: '2021 – 2023',
+    text: 'Raised conversion of the homepage "Order Again" widget by 12% with LightFM recommendations, automated training and inference on a Spark/Airflow platform, and improved Hindi autocomplete and spell correction in search.',
+  },
+  {
+    role: 'Data Scientist',
+    org: 'Grofers, Bengaluru',
+    when: '2019 – 2021',
+    text: 'Moved demand forecasting from a feed-forward network to a Temporal Fusion Transformer (+20% accuracy), solved product cannibalisation with constraint optimisation, and modelled warehouse order-picking time with an interpretable ensemble.',
+  },
+  {
+    role: 'Data Science Engineer (Intern)',
+    org: 'Grofers, Bengaluru',
+    when: '2019',
+    text: 'Automated warehouse liquidation pricing (discounts refreshed every 15 minutes) and ranked product assortment with a genetic algorithm to maximise checkouts.',
+  },
+];
+
+const publications = [
+  'Shaha, A. et al. Performance Prediction and Interpretation of a Refuse Plastic Fuel Fired Boiler. IEEE Access 8, 117467–117482 (2020).',
+  'Shaha, A. & Tripathy, B. In Soft Computing for Problem Solving, 135–144. Springer (2020).',
+  'Shaha, A., Arya, D. & Tripathy, B. In Soft Computing for Problem Solving, 239–250. Springer (2020).',
+];
+---
+
+<Base title="About" description="Aditya Shaha: data scientist and ML engineer for e-commerce and supply chain, based in Germany.">
+  <p class="eyebrow">About</p>
+  <h1>Hi, I'm Aditya.</h1>
+  <div class="prose">
+    <p>
+      I am a data scientist and machine learning engineer. Most of my career has been spent where ML meets physical
+      operations: forecasting what customers will order, deciding what to show them, and pricing what is left in the
+      warehouse.
+    </p>
+    <p>
+      I started at Grofers (now Blinkit), one of India's quick-commerce companies, where models had to hold up
+      against real warehouses, real delivery windows and millions of orders. Since then I have led ML engineering for
+      a property-data platform in Brussels, building LLM pipelines over multilingual web data. Today I am based in
+      Germany.
+    </p>
+    <p>
+      I write here about what actually works when you put these systems into production: the modelling, the
+      engineering around it, and the trade-offs that rarely make it into papers.
+    </p>
+  </div>
+
+  <h2>Experience</h2>
+  <ol class="timeline">
+    {
+      experience.map((e) => (
+        <li>
+          <div class="head">
+            <strong>{e.role}</strong>
+            <span class="when">{e.when}</span>
+          </div>
+          <div class="org">{e.org}</div>
+          <p>{e.text}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <h2>Education</h2>
+  <p>B.Tech. Computer Science and Engineering, Vellore Institute of Technology (2015 – 2019), CGPA 9.29/10.</p>
+
+  <h2>Selected publications</h2>
+  <ul class="pubs">{publications.map((p) => <li>{p}</li>)}</ul>
+
+  <h2>Get in touch</h2>
+  <p>
+    Happy to talk forecasting, recommender systems or ML in operations. Find me on <a href={SITE.linkedin}>LinkedIn</a>
+    or write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+  </p>
+</Base>
+
+<style>
+  h1 {
+    font-size: clamp(1.9rem, 5vw, 2.5rem);
+    margin: 0.75rem 0 1.25rem;
+  }
+  h2 {
+    font-size: 1.35rem;
+    margin: 2.75rem 0 1rem;
+  }
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 2px solid var(--line);
+  }
+  .timeline li {
+    position: relative;
+    padding: 0 0 1.5rem 1.25rem;
+  }
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 0.5rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 1rem;
+  }
+  .when,
+  .org {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .timeline p {
+    margin: 0.4rem 0 0;
+    font-size: 0.95rem;
+  }
+  .pubs {
+    padding-left: 1.1rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .pubs li + li {
+    margin-top: 0.4rem;
+  }
+</style>

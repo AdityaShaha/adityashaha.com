@@ -1,0 +1,171 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site';
+import { getPublishedPosts, formatDate } from '../posts';
+
+const posts = (await getPublishedPosts()).slice(0, 5);
+
+const proof = [
+  { value: '+20%', label: 'demand forecast accuracy after moving to a Temporal Fusion Transformer' },
+  { value: '+12%', label: 'conversion on a homepage recommendation widget at Blinkit' },
+  { value: '2,000', label: 'agency websites scraped daily by an LLM extraction pipeline, in 3 languages' },
+];
+
+const areas = [
+  { title: 'Demand forecasting', text: 'Deep and classical models for SKU-level demand, from feature design to production retraining.' },
+  { title: 'Recommendations & search', text: 'Product recommendations, autocomplete and spell correction that move conversion and basket size.' },
+  { title: 'Pricing & optimisation', text: 'Liquidation discounts, assortment ranking and constraint optimisation for real operations.' },
+  { title: 'LLM data pipelines', text: 'Turning messy, multilingual web data into structured records with LLMs, at scale.' },
+];
+---
+
+<Base>
+  <section class="hero">
+    <p class="eyebrow">Data Science · ML Engineering</p>
+    <h1>I build machine learning systems for e-commerce and supply chain.</h1>
+    <p class="lede">
+      Demand forecasting, recommendations, search and pricing: the models that decide what is on the shelf, what
+      customers see and what it costs. I have shipped them to production since 2019, from quick commerce at
+      Grofers and Blinkit in India to LLM data pipelines in Europe. Based in Germany.
+    </p>
+    <p class="cta">
+      <a href="/about/">More about me</a>
+      <a href={SITE.linkedin}>Connect on LinkedIn</a>
+    </p>
+  </section>
+
+  <section class="proof" aria-label="Selected results">
+    {
+      proof.map((p) => (
+        <div class="stat">
+          <span class="value">{p.value}</span>
+          <span class="label">{p.label}</span>
+        </div>
+      ))
+    }
+  </section>
+
+  <section>
+    <h2>What I work on</h2>
+    <div class="areas">
+      {
+        areas.map((a) => (
+          <div class="area">
+            <h3>{a.title}</h3>
+            <p>{a.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section>
+    <h2>Writing</h2>
+    {
+      posts.length ? (
+        <ul class="posts">
+          {posts.map((post) => (
+            <li>
+              <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+              <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="muted">
+          First essays on forecasting and applied ML are on the way. Follow along on{' '}
+          <a href={SITE.linkedin}>LinkedIn</a> or via <a href="/rss.xml">RSS</a>.
+        </p>
+      )
+    }
+  </section>
+</Base>
+
+<style>
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 2.9rem);
+    margin: 0.75rem 0 1.25rem;
+  }
+  .lede {
+    font-size: 1.125rem;
+    color: var(--muted);
+    margin: 0;
+  }
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+    font-weight: 500;
+  }
+  .proof {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin: 3.5rem 0;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  @media (max-width: 560px) {
+    .proof {
+      grid-template-columns: 1fr;
+    }
+  }
+  .stat {
+    background: var(--surface);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .value {
+    font: 600 1.9rem/1 var(--serif);
+    color: var(--accent);
+  }
+  .label {
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  section h2 {
+    font-size: 1.4rem;
+    margin: 3rem 0 1.25rem;
+  }
+  .areas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 1.5rem 2rem;
+  }
+  .area h3 {
+    font: 600 1rem/1.3 var(--sans);
+    margin: 0 0 0.35rem;
+  }
+  .area p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .posts {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .posts li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .posts time,
+  .muted {
+    color: var(--muted);
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  .muted {
+    white-space: normal;
+  }
+</style>

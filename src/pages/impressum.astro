@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, IMPRESSUM } from '../site';
+---
+
+<Base title="Impressum">
+  <div class="prose">
+    <h1>Impressum</h1>
+    <p>Angaben gemäß § 5 DDG</p>
+    <p>
+      {SITE.name}<br />
+      {IMPRESSUM.street}<br />
+      {IMPRESSUM.city}<br />
+      Deutschland
+    </p>
+    <h2>Kontakt</h2>
+    <p>
+      E-Mail: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      {IMPRESSUM.phone && <><br />Telefon: {IMPRESSUM.phone}</>}
+    </p>
+    <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+    <p>{SITE.name}, Anschrift wie oben</p>
+    <h2>Haftung für Links</h2>
+    <p>
+      Diese Website enthält Links zu externen Websites Dritter, auf deren Inhalte ich keinen Einfluss habe. Für die
+      Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich.
+    </p>
+  </div>
+</Base>
