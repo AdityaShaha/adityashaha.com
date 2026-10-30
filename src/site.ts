@@ -2,7 +2,7 @@ export const SITE = {
   name: 'Aditya Shaha',
   title: 'Aditya Shaha',
   description:
-    'Personal blog of Aditya Shaha, a data scientist in Köln: machine learning, things I am building and learning, and old paintings.',
+    'Personal blog of Aditya Shaha, a machine learning engineer in Köln: machine learning, learning new things, and exploring.',
   email: 'aditya.shaha.p@gmail.com',
   linkedin: 'https://www.linkedin.com/in/aditya-shaha-932a8b167/',
   github: 'https://github.com/AdityaShaha',
