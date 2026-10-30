@@ -11,7 +11,7 @@ export const SITE = {
 // Impressum (§5 DDG, §18 MStV) needs a postal address where you can be served.
 // Fill these in before pointing the domain at the site.
 export const IMPRESSUM = {
-  street: 'Amsterdamer Str. 83',
+  street: 'Amsterdamer Str.',
   city: '50735 Köln',
   phone: '', // or leave empty if you add a contact form
 };
