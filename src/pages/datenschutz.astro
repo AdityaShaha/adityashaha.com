@@ -4,8 +4,9 @@ import { SITE, IMPRESSUM } from '../site';
 ---
 
 <Base title="Datenschutzerklärung">
-  <div class="prose">
-    <h1>Datenschutzerklärung</h1>
+  <article class="legal">
+    <h1 class="display">Datenschutzerklärung</h1>
+    <div class="prose">
 
     <h2>Verantwortlicher</h2>
     <p>
@@ -46,5 +47,19 @@ import { SITE, IMPRESSUM } from '../site';
       Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit
       und Widerspruch (Art. 15–21 DSGVO) sowie das Recht auf Beschwerde bei einer Datenschutz-Aufsichtsbehörde.
     </p>
-  </div>
+    </div>
+  </article>
 </Base>
+
+<style>
+  .legal {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 72px 24px 0;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5.5vw, 3.4rem);
+    line-height: 1.08;
+    margin: 0 0 32px;
+  }
+</style>

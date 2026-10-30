@@ -1,59 +1,108 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getPublishedPosts, formatDate } from '../../posts';
+import gisze from '../../assets/art/holbein-gisze-wide.jpg';
 
 const posts = await getPublishedPosts();
 ---
 
-<Base title="Writing" description="Essays on demand forecasting, recommendations and applied ML for e-commerce and supply chain.">
-  <p class="eyebrow">Writing</p>
-  <h1>Notes from production ML</h1>
-  {
-    posts.length ? (
-      <ul class="list">
-        {posts.map((post) => (
-          <li>
+<Base
+  title="Blog"
+  description="Aditya Shaha's blog: mostly machine learning, sometimes paintings, occasionally life."
+  wall={{
+    src: gisze,
+    alt: "Holbein's The Merchant Georg Gisze: a merchant at his desk, surrounded by letters and documents.",
+    credit: 'Hans Holbein the Younger, <em>The Merchant Georg Gisze</em>, 1532',
+    pos: '50% 22%',
+  }}
+>
+  <header class="page-head">
+    <h1 class="display">Blog.</h1>
+    <p>Mostly machine learning, sometimes paintings, occasionally life.</p>
+  </header>
+
+  <section class="list">
+    {
+      posts.length ? (
+        posts.map((post) => (
+          <a class="post" href={`/blog/${post.id}/`}>
             <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-            <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+            <h2 class="display">{post.data.title}</h2>
             <p>{post.data.description}</p>
-          </li>
-        ))}
-      </ul>
-    ) : (
-      <p class="empty">The first posts are being written. Subscribe via <a href="/rss.xml">RSS</a> to get them.</p>
-    )
-  }
+            {post.data.tags.length > 0 && <span class="tags">{post.data.tags.map((t) => `#${t}`).join('  ')}</span>}
+          </a>
+        ))
+      ) : (
+        <p class="empty">No posts yet. The first one is on its way.</p>
+      )
+    }
+  </section>
 </Base>
 
 <style>
-  h1 {
-    font-size: clamp(1.9rem, 5vw, 2.5rem);
-    margin: 0.75rem 0 2rem;
-  }
+  .page-head,
   .list {
-    list-style: none;
-    padding: 0;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .page-head {
+    padding-top: 72px;
+    padding-bottom: 48px;
+  }
+  h1 {
+    font-size: clamp(2.8rem, 7vw, 5rem);
     margin: 0;
   }
-  .list li {
-    padding: 1.25rem 0;
+  .page-head p {
+    font-size: 1.2rem;
+    color: var(--muted);
+    margin: 14px 0 0;
+    max-width: 560px;
+    text-wrap: balance;
+  }
+  .list {
     border-top: 1px solid var(--line);
   }
-  .list a {
+  .post {
     display: block;
-    font: 600 1.2rem/1.35 var(--serif);
-    color: var(--ink);
-    text-decoration: none;
-    margin: 0.2rem 0 0.35rem;
-  }
-  .list a:hover {
-    color: var(--accent);
+    max-width: 700px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
   }
   time,
-  .list p,
-  .empty {
+  .tags {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+  time {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .post h2 {
+    font-size: 1.45rem;
+    line-height: 1.2;
+    margin: 8px 0 6px;
+    transition: color 0.15s;
+  }
+  .post:hover h2 {
+    color: var(--gold);
+  }
+  .post p {
+    margin: 0 0 8px;
     color: var(--muted);
-    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .tags {
+    color: #a1a1a6;
+    white-space: pre;
+  }
+  .empty {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 1.05rem;
+    color: var(--faint);
     margin: 0;
   }
 </style>

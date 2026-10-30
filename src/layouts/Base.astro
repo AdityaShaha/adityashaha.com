@@ -1,20 +1,31 @@
 ---
+import '@fontsource-variable/inter/opsz.css';
+import '@fontsource-variable/inter/opsz-italic.css';
 import '../styles/global.css';
-import { SITE } from '../site';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { SITE, NAV } from '../site';
+
+// A full-width header painting ("wall") shown under the navigation.
+interface Wall {
+  src: ImageMetadata;
+  alt: string;
+  credit: string;
+  pos?: string;
+}
 
 interface Props {
   title?: string;
   description?: string;
+  wall?: Wall;
 }
 
-const { title, description = SITE.description } = Astro.props;
+const { title, description = SITE.description, wall } = Astro.props;
 const fullTitle = title ? `${title} | ${SITE.name}` : SITE.title;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og.jpg', Astro.site);
 const path = Astro.url.pathname;
-const nav = [
-  { href: '/about/', label: 'About' },
-  { href: '/blog/', label: 'Writing' },
-];
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
 ---
 
 <!doctype html>
@@ -32,35 +43,44 @@ const nav = [
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
-    <header class="wrap site-header">
-      <a href="/" class="brand">Aditya Shaha</a>
+    <header class="top">
+      <a href="/" class="wordmark">{SITE.name}</a>
       <nav>
-        {
-          nav.map((item) => (
-            <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
-              {item.label}
-            </a>
-          ))
-        }
+        {NAV.map((item) => <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.name}</a>)}
       </nav>
     </header>
 
-    <main class="wrap">
+    {
+      wall && (
+        <figure class="wall">
+          <Image
+            src={wall.src}
+            alt={wall.alt}
+            widths={[640, 1024, 1600, 2000]}
+            sizes="100vw"
+            quality={64}
+            loading="eager"
+            fetchpriority="high"
+            style={`object-position:${wall.pos ?? '50% 50%'}`}
+          />
+          <figcaption set:html={wall.credit} />
+        </figure>
+      )
+    }
+
+    <main>
       <slot />
     </main>
 
-    <footer class="wrap site-footer">
-      <div class="links">
+    <footer>
+      <span>© {new Date().getFullYear()} {SITE.name} · Köln</span>
+      <div>
         <a href={SITE.linkedin} rel="me">LinkedIn</a>
         <a href={SITE.github} rel="me">GitHub</a>
-        <a href={`mailto:${SITE.email}`}>Email</a>
-        <a href="/rss.xml">RSS</a>
-      </div>
-      <div class="legal">
-        <span>© {new Date().getFullYear()} Aditya Shaha</span>
         <a href="/impressum/">Impressum</a>
         <a href="/datenschutz/">Datenschutz</a>
       </div>
@@ -69,58 +89,93 @@ const nav = [
 </html>
 
 <style>
-  .site-header {
+  .top {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 20px 24px;
     display: flex;
-    align-items: baseline;
     justify-content: space-between;
-    gap: 1rem;
-    padding-top: 2rem;
-    padding-bottom: 2.5rem;
+    align-items: baseline;
+    gap: 16px;
+    font-size: 0.85rem;
   }
-  .brand {
-    font: 600 1.15rem/1 var(--serif);
-    color: var(--ink);
-    text-decoration: none;
+  .wordmark {
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-size: 1.05rem;
+    white-space: nowrap;
   }
   nav {
     display: flex;
-    gap: 1.25rem;
-  }
-  nav a {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px 24px;
     color: var(--muted);
-    text-decoration: none;
-    font-size: 0.95rem;
   }
   nav a:hover,
   nav a[aria-current='page'] {
     color: var(--ink);
   }
-  main {
-    min-height: 60vh;
+  nav a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-color: #c9a24a;
+    text-underline-offset: 6px;
   }
-  .site-footer {
-    margin-top: 5rem;
-    padding-top: 1.5rem;
-    padding-bottom: 3rem;
+  .wall {
+    position: relative;
+    margin: 0;
+    height: clamp(220px, 42vh, 460px);
+    overflow: hidden;
+    background: #d9d2c4;
+  }
+  .wall img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .wall figcaption {
+    position: absolute;
+    right: 16px;
+    bottom: 10px;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  }
+  main {
+    min-height: 40vh;
+  }
+  footer {
+    max-width: 1080px;
+    margin: 120px auto 0;
+    padding: 24px;
     border-top: 1px solid var(--line);
-    font-size: 0.875rem;
-    color: var(--muted);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 0.75rem 1.5rem;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: var(--faint);
   }
-  .site-footer .links,
-  .site-footer .legal {
+  footer div {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 18px;
   }
-  .site-footer a {
-    color: var(--muted);
-    text-decoration: none;
-  }
-  .site-footer a:hover {
+  footer a:hover {
     color: var(--ink);
+  }
+  @media (max-width: 760px) {
+    .top {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    nav {
+      justify-content: flex-start;
+      gap: 6px 18px;
+    }
+    .wall {
+      height: 240px;
+    }
   }
 </style>
